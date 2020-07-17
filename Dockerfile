@@ -1,7 +1,7 @@
-FROM dynorobotics/balena-amd64-ros2:dashing-isolated-cyclone
+FROM dynorobotics/balena-amd64-ros2:foxy-isolated-cyclone
 
 # install dotnet build support
-RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 
 RUN apt-get update && apt-get install -y \
@@ -12,17 +12,17 @@ RUN add-apt-repository universe
 
 RUN apt-get update && apt-get install -y \
   apt-transport-https \
-  dotnet-sdk-2.2 \
+  dotnet-sdk-3.1 \
   && rm -rf /var/likb/apt/lists/*
 
-# build 
+# build
 RUN mkdir -p /opt/dotnet_ws/src
 
 WORKDIR /opt/dotnet_ws
 
-COPY ros2_dotnet_dashing.repos ros2_dotnet_dashing.repos
+COPY ros2_dotnet_foxy.repos ros2_dotnet_foxy.repos
 
-RUN vcs import src < ros2_dotnet_dashing.repos
+RUN vcs import src < ros2_dotnet_foxy.repos
 
 RUN rm -r src/dotnet/ros2_dotnet
 
